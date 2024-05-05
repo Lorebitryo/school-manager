@@ -5,6 +5,7 @@ import com.cyberways.schoolmanager.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @Service
@@ -19,5 +20,17 @@ public class StudentService {
 
     public String createStudent(Student student) {
         return studentRepository.save(student).toString();
+    }
+
+    public String updateStudent(Student student) {
+        Optional<Student> optionalStudent = studentRepository.findById(student.getId());
+
+        optionalStudent.ifPresent(existingStudent -> {
+            existingStudent.setFirstName(student.getFirstName());
+            existingStudent.setLastName(student.getLastName());
+            studentRepository.save(existingStudent);
+        });
+
+        return optionalStudent.map(Student::toString).orElse("Student not found");
     }
 }

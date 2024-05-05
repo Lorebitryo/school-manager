@@ -20,4 +20,9 @@ public class StudentController {
     public String createStudent(@RequestBody Student student) {
         return studentService.createStudent(student);
     }
+
+    @PutMapping("/student")
+    public String updateStudent(@RequestBody Student student) {
+        return studentService.updateStudent(student);
+    }
 }
