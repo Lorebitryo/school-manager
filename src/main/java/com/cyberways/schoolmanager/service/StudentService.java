@@ -33,4 +33,10 @@ public class StudentService {
 
         return optionalStudent.map(Student::toString).orElse("Student not found");
     }
+
+    public Optional<Student> deleteStudentById(Long id) {
+        Optional<Student> optionalStudent = studentRepository.findById(id);
+        optionalStudent.ifPresent(student -> studentRepository.deleteById(id));
+        return optionalStudent;
+    }
 }
