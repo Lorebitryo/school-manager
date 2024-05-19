@@ -18,8 +18,8 @@ public class StudentService {
         return studentRepository.findById(id);
     }
 
-    public String createStudent(Student student) {
-        return studentRepository.save(student).toString();
+    public Student createStudent(Student student) {
+        return studentRepository.save(student);
     }
 
     public String updateStudent(Student student) {
