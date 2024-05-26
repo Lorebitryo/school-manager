@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/student")
+@RequestMapping("/students")
 public class StudentController {
 
     private final StudentService studentService;
@@ -33,14 +33,21 @@ public class StudentController {
         return ResponseEntity.ok(createdStudent);
     }
 
-    @PutMapping
-    public String updateStudent(@RequestBody Student student) {
-        return studentService.updateStudent(student);
+    @PutMapping("/{id}")
+    public ResponseEntity<Student> updateStudent(@PathVariable Long id, @RequestBody Student student) {
+        Optional<Student> updatedStudent = studentService.updateStudent(id, student);
+        return updatedStudent.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
-    public String deleteStudentById(@PathVariable Long id) {
-        return studentService.deleteStudentById(id).toString();
+    public ResponseEntity<Void> deleteStudentById(@PathVariable Long id) {
+        boolean isDeleted = studentService.deleteStudentById(id);
+
+        if(isDeleted) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 }

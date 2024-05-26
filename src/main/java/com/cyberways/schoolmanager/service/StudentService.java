@@ -5,14 +5,17 @@ import com.cyberways.schoolmanager.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @Service
 public class StudentService {
 
+    private final StudentRepository studentRepository;
+
     @Autowired
-    private StudentRepository studentRepository;
+    public StudentService(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
+    }
 
     public Optional<Student> getStudentById(Long id) {
         return studentRepository.findById(id);
@@ -22,21 +25,20 @@ public class StudentService {
         return studentRepository.save(student);
     }
 
-    public String updateStudent(Student student) {
-        Optional<Student> optionalStudent = studentRepository.findById(student.getId());
+    public Optional<Student> updateStudent(Long id, Student student) {
 
-        optionalStudent.ifPresent(existingStudent -> {
+        return studentRepository.findById(id).map(existingStudent -> {
             existingStudent.setFirstName(student.getFirstName());
             existingStudent.setLastName(student.getLastName());
-            studentRepository.save(existingStudent);
+            return studentRepository.save(existingStudent);
         });
-
-        return optionalStudent.map(Student::toString).orElse("Student not found");
     }
 
-    public Optional<Student> deleteStudentById(Long id) {
-        Optional<Student> optionalStudent = studentRepository.findById(id);
-        optionalStudent.ifPresent(student -> studentRepository.deleteById(id));
-        return optionalStudent;
+    public boolean deleteStudentById(Long id) {
+
+        return studentRepository.findById(id).map(student -> {
+            studentRepository.deleteById(id);
+            return true;
+        }).orElse(false);
     }
 }
