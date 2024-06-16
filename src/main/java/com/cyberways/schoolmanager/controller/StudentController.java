@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -25,6 +26,18 @@ public class StudentController {
         Optional<Student> student = studentService.getStudentById(id);
 
         return student.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/searchByFirstName")
+    public ResponseEntity<List<Student>> searchByFirstName(@RequestParam String firstNamePart) {
+
+        List<Student> students = studentService.searchByFirstName(firstNamePart);
+
+        if(students.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.ok(students);
+        }
     }
 
     @PostMapping
