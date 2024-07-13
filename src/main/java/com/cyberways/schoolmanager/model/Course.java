@@ -1,6 +1,7 @@
 package com.cyberways.schoolmanager.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,15 +13,15 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Student {
+public class Course {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String firstName;
-    private String lastName;
+    private String title;
+    private String description;
 
-    @ManyToMany
-    @JsonManagedReference
-    private List<Course> courses;
+    @ManyToMany(mappedBy = "courses")
+    @JsonBackReference
+    private List<Student> students;
 }
