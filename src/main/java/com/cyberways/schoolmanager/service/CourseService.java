@@ -1,13 +1,10 @@
 package com.cyberways.schoolmanager.service;
 
 import com.cyberways.schoolmanager.model.Course;
-import com.cyberways.schoolmanager.model.Student;
 import com.cyberways.schoolmanager.repository.CourseRepository;
-import com.cyberways.schoolmanager.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
